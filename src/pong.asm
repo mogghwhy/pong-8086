@@ -9,9 +9,9 @@ CODE SEGMENT PARA 'CODE'
 
     MAIN PROC FAR
         
-        MOV DL, 'A'
-        MOV AH,6h
-        INT 21h
+        MOV AH,00h
+        MOV AL,13h
+        INT 10h
 
         RET
     MAIN ENDP
