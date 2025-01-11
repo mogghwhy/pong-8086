@@ -9,6 +9,8 @@ DATA SEGMENT PARA 'DATA'
     BALL_X DW 0Ah ; x position ( column ) of the ball
     BALL_Y DW 0Ah ; y position ( line ) of the ball
     BALL_SIZE DW 04h ; ball width and height 
+    BALL_VELOCITY_X DW 05h ; x horizontal velocity of the ball
+    BALL_VELOCITY_Y DW 02h ; y vertical velocity of the ball
 
 DATA ENDS
 
@@ -43,7 +45,6 @@ CODE SEGMENT PARA 'CODE'
                              ; if it is different then draw, move, etc
 
             MOV TIME_AUX,DL  ; update time
-            INC BALL_X
             CALL DRAW_BALL
 
             JMP CHECK_TIME    ; after everything check the time again
