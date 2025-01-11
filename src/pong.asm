@@ -39,10 +39,8 @@ CODE SEGMENT PARA 'CODE'
                              ; if it is different then draw, move, etc
 
             MOV TIME_AUX,DL  ; update time
-            MOV AX,BALL_VELOCITY_X
-            ADD BALL_X,AX
-            MOV AX,BALL_VELOCITY_Y
-            ADD BALL_Y,AX
+
+            CALL MOVE_BALL
 
             CALL CLEAR_SCREEN
 
@@ -52,6 +50,16 @@ CODE SEGMENT PARA 'CODE'
 
         RET
     MAIN ENDP
+
+    MOVE_BALL PROC NEAR
+
+            MOV AX,BALL_VELOCITY_X
+            ADD BALL_X,AX
+            MOV AX,BALL_VELOCITY_Y
+            ADD BALL_Y,AX
+        RET
+
+    MOVE_BALL ENDP
 
     DRAW_BALL PROC NEAR
 
