@@ -45,8 +45,10 @@ CODE SEGMENT PARA 'CODE'
                              ; if it is different then draw, move, etc
 
             MOV TIME_AUX,DL  ; update time
-            ADD BALL_X,BALL_VELOCITY_X
-            ADD BALL_Y,BALL_VELOCITY_Y
+            MOV AX,BALL_VELOCITY_X
+            ADD BALL_X,AX
+            MOV AX,BALL_VELOCITY_Y
+            ADD BALL_Y,AX
 
             CALL DRAW_BALL
 
