@@ -4,6 +4,8 @@ STACK ENDS
 
 DATA SEGMENT PARA 'DATA'
 
+    TIME_AUX DB 0 ;variable used when checking if the time has changed
+
     BALL_X DW 0Ah ; x position ( column ) of the ball
     BALL_Y DW 0Ah ; y position ( line ) of the ball
     BALL_SIZE DW 04h ; ball width and height 
