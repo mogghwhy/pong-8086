@@ -40,9 +40,9 @@ CODE SEGMENT PARA 'CODE'
 
             MOV TIME_AUX,DL  ; update time
 
-            CALL MOVE_BALL
-
             CALL CLEAR_SCREEN
+
+            CALL MOVE_BALL
 
             CALL DRAW_BALL
 
