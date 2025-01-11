@@ -4,6 +4,7 @@ STACK ENDS
 
 DATA SEGMENT PARA 'DATA'
 
+
     TIME_AUX DB 0 ;variable used when checking if the time has changed
 
     BALL_X DW 0Ah ; x position ( column ) of the ball
@@ -26,6 +27,7 @@ CODE SEGMENT PARA 'CODE'
     POP AX                          ;release the top item from the stack to the ax register
     POP AX                          ;release the top item from the stack to the ax register
         
+
 
         CALL CLEAR_SCREEN
 
@@ -51,6 +53,7 @@ CODE SEGMENT PARA 'CODE'
         RET
     MAIN ENDP
 
+
     MOVE_BALL PROC NEAR
 
             MOV AX,BALL_VELOCITY_X
@@ -60,6 +63,7 @@ CODE SEGMENT PARA 'CODE'
         RET
 
     MOVE_BALL ENDP
+
 
     DRAW_BALL PROC NEAR
 
@@ -91,6 +95,7 @@ CODE SEGMENT PARA 'CODE'
 
     DRAW_BALL ENDP
 
+
     CLEAR_SCREEN PROC NEAR
 
         MOV AH,00h ; set the configuration to video mode
@@ -105,6 +110,7 @@ CODE SEGMENT PARA 'CODE'
         RET
 
     CLEAR_SCREEN ENDP
+
 
 CODE ENDS
 END
