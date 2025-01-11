@@ -94,6 +94,8 @@ CODE SEGMENT PARA 'CODE'
         MOV BL,00h ; set the bg color as black
         INT 10h
 
+        RET
+
     CLEAR_SCREEN ENDP
 
 CODE ENDS
