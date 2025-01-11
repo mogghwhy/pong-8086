@@ -31,6 +31,9 @@ CODE SEGMENT PARA 'CODE'
         MOV BL,00h ; set the bg color as black
         INT 10h
 
+        MOV AH,2Ch ; get the system time
+        INT 21h    ; trigger the interrupt; CH = hour, CL = minute, DH = second, DL = 1/100 seconds
+
         CALL DRAW_BALL
 
         RET
