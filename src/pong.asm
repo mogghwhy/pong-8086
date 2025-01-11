@@ -26,14 +26,8 @@ CODE SEGMENT PARA 'CODE'
     POP AX                          ;release the top item from the stack to the ax register
     POP AX                          ;release the top item from the stack to the ax register
         
-        MOV AH,00h ; set the configuration to video mode
-        MOV AL,13h ; choose the video mode
-        INT 10h    ; execute the configuration
 
-        MOV AH,0Bh ; set the configuration
-        MOV BH,00h ; to the background color
-        MOV BL,00h ; set the bg color as black
-        INT 10h
+        CALL CLEAR_SCREEN
 
         CHECK_TIME:
 
@@ -49,6 +43,8 @@ CODE SEGMENT PARA 'CODE'
             ADD BALL_X,AX
             MOV AX,BALL_VELOCITY_Y
             ADD BALL_Y,AX
+
+            CALL CLEAR_SCREEN
 
             CALL DRAW_BALL
 
@@ -86,6 +82,19 @@ CODE SEGMENT PARA 'CODE'
         RET
 
     DRAW_BALL ENDP
+
+    CLEAR_SCREEN PROC NEAR
+
+        MOV AH,00h ; set the configuration to video mode
+        MOV AL,13h ; choose the video mode
+        INT 10h    ; execute the configuration
+
+        MOV AH,0Bh ; set the configuration
+        MOV BH,00h ; to the background color
+        MOV BL,00h ; set the bg color as black
+        INT 10h
+
+    CLEAR_SCREEN ENDP
 
 CODE ENDS
 END
