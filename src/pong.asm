@@ -45,6 +45,9 @@ CODE SEGMENT PARA 'CODE'
                              ; if it is different then draw, move, etc
 
             MOV TIME_AUX,DL  ; update time
+            ADD BALL_X,BALL_VELOCITY_X
+            ADD BALL_Y,BALL_VELOCITY_Y
+
             CALL DRAW_BALL
 
             JMP CHECK_TIME    ; after everything check the time again
