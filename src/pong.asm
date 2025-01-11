@@ -4,9 +4,14 @@ STACK ENDS
 
 DATA SEGMENT PARA 'DATA'
 
+
+    TIME_AUX DB 0 ;variable used when checking if the time has changed
+
     BALL_X DW 0Ah ; x position ( column ) of the ball
     BALL_Y DW 0Ah ; y position ( line ) of the ball
     BALL_SIZE DW 04h ; ball width and height 
+    BALL_VELOCITY_X DW 05h ; x horizontal velocity of the ball
+    BALL_VELOCITY_Y DW 02h ; y vertical velocity of the ball
 
 DATA ENDS
 
@@ -22,19 +27,43 @@ CODE SEGMENT PARA 'CODE'
     POP AX                          ;release the top item from the stack to the ax register
     POP AX                          ;release the top item from the stack to the ax register
         
-        MOV AH,00h ; set the configuration to video mode
-        MOV AL,13h ; choose the video mode
-        INT 10h    ; execute the configuration
 
-        MOV AH,0Bh ; set the configuration
-        MOV BH,00h ; to the background color
-        MOV BL,00h ; set the bg color as black
-        INT 10h
 
-        CALL DRAW_BALL
+        CALL CLEAR_SCREEN
+
+        CHECK_TIME:
+
+            MOV AH,2Ch ; get the system time
+            INT 21h    ; trigger the interrupt; CH = hour, CL = minute, DH = second, DL = 1/100 seconds
+
+            CMP DL,TIME_AUX  ; is the current time equal to the previous one(TIME_AUX)
+            JE CHECK_TIME    ; if it is the same, check again
+                             ; if it is different then draw, move, etc
+
+            MOV TIME_AUX,DL  ; update time
+
+            CALL CLEAR_SCREEN
+
+            CALL MOVE_BALL
+
+            CALL DRAW_BALL
+
+            JMP CHECK_TIME    ; after everything check the time again
 
         RET
     MAIN ENDP
+
+
+    MOVE_BALL PROC NEAR
+
+            MOV AX,BALL_VELOCITY_X
+            ADD BALL_X,AX
+            MOV AX,BALL_VELOCITY_Y
+            ADD BALL_Y,AX
+        RET
+
+    MOVE_BALL ENDP
+
 
     DRAW_BALL PROC NEAR
 
@@ -65,6 +94,23 @@ CODE SEGMENT PARA 'CODE'
         RET
 
     DRAW_BALL ENDP
+
+
+    CLEAR_SCREEN PROC NEAR
+
+        MOV AH,00h ; set the configuration to video mode
+        MOV AL,13h ; choose the video mode
+        INT 10h    ; execute the configuration
+
+        MOV AH,0Bh ; set the configuration
+        MOV BH,00h ; to the background color
+        MOV BL,00h ; set the bg color as black
+        INT 10h
+
+        RET
+
+    CLEAR_SCREEN ENDP
+
 
 CODE ENDS
 END
