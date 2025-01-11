@@ -33,10 +33,20 @@ CODE SEGMENT PARA 'CODE'
         MOV BL,00h ; set the bg color as black
         INT 10h
 
-        MOV AH,2Ch ; get the system time
-        INT 21h    ; trigger the interrupt; CH = hour, CL = minute, DH = second, DL = 1/100 seconds
+        CHECK_TIME:
 
-        CALL DRAW_BALL
+            MOV AH,2Ch ; get the system time
+            INT 21h    ; trigger the interrupt; CH = hour, CL = minute, DH = second, DL = 1/100 seconds
+
+            CMP DL,TIME_AUX  ; is the current time equal to the previous one(TIME_AUX)
+            JE CHECK_TIME    ; if it is the same, check again
+                             ; if it is different then draw, move, etc
+
+            MOV TIME_AUX,DL  ; update time
+            INC BALL_X
+            CALL DRAW_BALL
+
+            JMP CHECK_TIME    ; after everything check the time again
 
         RET
     MAIN ENDP
