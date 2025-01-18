@@ -4,6 +4,9 @@ STACK ENDS
 
 DATA SEGMENT PARA 'DATA'
 
+    WINDOW_WIDTH DW 140h ; the width of the window
+    WINDOW_HEIGHT DW 0C8h ; the height of the window
+
     TIME_AUX DB 0 ;variable used when checking if the time has changed
 
     BALL_X DW 0Ah ; x position ( column ) of the ball
