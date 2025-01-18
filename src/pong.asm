@@ -4,8 +4,9 @@ STACK ENDS
 
 DATA SEGMENT PARA 'DATA'
 
-    WINDOW_WIDTH DW 140h ; the width of the window
+    WINDOW_WIDTH DW 140h  ; the width of the window
     WINDOW_HEIGHT DW 0C8h ; the height of the window
+    WINDOW_BOUNDS DW 6    ; variable to check collisions early
 
     TIME_AUX DB 0 ;variable used when checking if the time has changed
 
@@ -59,22 +60,24 @@ CODE SEGMENT PARA 'CODE'
             MOV AX,BALL_VELOCITY_X
             ADD BALL_X,AX          ; move the ball horizontally 
 
-            CMP BALL_X,00h         ; 
+            CMP BALL_X,WINDOW_BOUNDS 
             JL NEG_VELOCITY_X      ; BALL_X < 0 ( collision with left boundary )
 
             MOV AX,WINDOW_WIDTH
             SUB AX,BALL_SIZE
+            SUB AX,WINDOW_BOUNDS
             CMP BALL_X,AX          ;
             JG NEG_VELOCITY_X      ; BALL_X > WINDOW_WIDTH - BALL_SIZE ( collision with right boundary ) 
 
             MOV AX,BALL_VELOCITY_Y 
             ADD BALL_Y,AX          ; move the ball vertically
 
-            CMP BALL_Y,00h         ; 
+            CMP BALL_Y,WINDOW_BOUNDS 
             JL NEG_VELOCITY_Y      ; BALL_Y < 0 ( collision with top boundary )
 
             MOV AX,WINDOW_HEIGHT 
             SUB AX,BALL_SIZE
+            SUB AX,WINDOW_BOUNDS
             CMP BALL_Y,AX          
             JG NEG_VELOCITY_Y      ; BALL_Y > WINDOW_HEIGHT - BALL_SIZE ( collision with bottom boundary )
 
