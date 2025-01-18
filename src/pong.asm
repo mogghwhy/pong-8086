@@ -4,6 +4,9 @@ STACK ENDS
 
 DATA SEGMENT PARA 'DATA'
 
+    WINDOW_WIDTH DW 140h  ; the width of the window
+    WINDOW_HEIGHT DW 0C8h ; the height of the window
+    WINDOW_BOUNDS DW 6    ; variable to check collisions early
 
     TIME_AUX DB 0 ;variable used when checking if the time has changed
 
@@ -27,7 +30,6 @@ CODE SEGMENT PARA 'CODE'
     POP AX                          ;release the top item from the stack to the ax register
     POP AX                          ;release the top item from the stack to the ax register
         
-
 
         CALL CLEAR_SCREEN
 
@@ -53,17 +55,46 @@ CODE SEGMENT PARA 'CODE'
         RET
     MAIN ENDP
 
-
     MOVE_BALL PROC NEAR
 
             MOV AX,BALL_VELOCITY_X
-            ADD BALL_X,AX
-            MOV AX,BALL_VELOCITY_Y
-            ADD BALL_Y,AX
+            ADD BALL_X,AX          ; move the ball horizontally 
+
+            MOV AX,WINDOW_BOUNDS
+            CMP BALL_X,AX
+            JL NEG_VELOCITY_X      ; BALL_X < 0 + WINDOW_BOUNDS ( collision with left boundary )
+
+            MOV AX,WINDOW_WIDTH
+            SUB AX,BALL_SIZE
+            SUB AX,WINDOW_BOUNDS
+            CMP BALL_X,AX          ;
+            JG NEG_VELOCITY_X      ; BALL_X > WINDOW_WIDTH - BALL_SIZE - WINDOW_BOUNDS ( collision with right boundary ) 
+
+            MOV AX,BALL_VELOCITY_Y 
+            ADD BALL_Y,AX          ; move the ball vertically
+
+            MOV AX,WINDOW_BOUNDS
+            CMP BALL_Y,AX
+            JL NEG_VELOCITY_Y      ; BALL_Y < 0 + WINDOW_BOUNDS ( collision with top boundary )
+
+            MOV AX,WINDOW_HEIGHT 
+            SUB AX,BALL_SIZE
+            SUB AX,WINDOW_BOUNDS
+            CMP BALL_Y,AX          
+            JG NEG_VELOCITY_Y      ; BALL_Y > WINDOW_HEIGHT - BALL_SIZE - WINDOW_BOUNDS ( collision with bottom boundary )
+
+
         RET
 
-    MOVE_BALL ENDP
+        NEG_VELOCITY_X:
+            NEG BALL_VELOCITY_X
+            RET
 
+        NEG_VELOCITY_Y:
+            NEG BALL_VELOCITY_Y
+            RET
+
+    MOVE_BALL ENDP
 
     DRAW_BALL PROC NEAR
 
@@ -95,7 +126,6 @@ CODE SEGMENT PARA 'CODE'
 
     DRAW_BALL ENDP
 
-
     CLEAR_SCREEN PROC NEAR
 
         MOV AH,00h ; set the configuration to video mode
@@ -110,7 +140,6 @@ CODE SEGMENT PARA 'CODE'
         RET
 
     CLEAR_SCREEN ENDP
-
 
 CODE ENDS
 END
