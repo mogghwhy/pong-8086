@@ -57,9 +57,9 @@ CODE SEGMENT PARA 'CODE'
     MOVE_BALL PROC NEAR
 
             MOV AX,BALL_VELOCITY_X
-            ADD BALL_X,AX
-            MOV AX,BALL_VELOCITY_Y
-            ADD BALL_Y,AX
+            ADD BALL_X,AX          ; move the ball horizontally 
+            MOV AX,BALL_VELOCITY_Y 
+            ADD BALL_Y,AX          ; move the ball vertically
         RET
 
     MOVE_BALL ENDP
