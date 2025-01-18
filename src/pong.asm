@@ -60,26 +60,28 @@ CODE SEGMENT PARA 'CODE'
             MOV AX,BALL_VELOCITY_X
             ADD BALL_X,AX          ; move the ball horizontally 
 
-            CMP BALL_X,WINDOW_BOUNDS 
-            JL NEG_VELOCITY_X      ; BALL_X < 0 ( collision with left boundary )
+            MOV AX,WINDOW_BOUNDS
+            CMP BALL_X,AX
+            JL NEG_VELOCITY_X      ; BALL_X < 0 + WINDOW_BOUNDS ( collision with left boundary )
 
             MOV AX,WINDOW_WIDTH
             SUB AX,BALL_SIZE
             SUB AX,WINDOW_BOUNDS
             CMP BALL_X,AX          ;
-            JG NEG_VELOCITY_X      ; BALL_X > WINDOW_WIDTH - BALL_SIZE ( collision with right boundary ) 
+            JG NEG_VELOCITY_X      ; BALL_X > WINDOW_WIDTH - BALL_SIZE - WINDOW_BOUNDS ( collision with right boundary ) 
 
             MOV AX,BALL_VELOCITY_Y 
             ADD BALL_Y,AX          ; move the ball vertically
 
-            CMP BALL_Y,WINDOW_BOUNDS 
-            JL NEG_VELOCITY_Y      ; BALL_Y < 0 ( collision with top boundary )
+            MOV AX,WINDOW_BOUNDS
+            CMP BALL_Y,AX
+            JL NEG_VELOCITY_Y      ; BALL_Y < 0 + WINDOW_BOUNDS ( collision with top boundary )
 
             MOV AX,WINDOW_HEIGHT 
             SUB AX,BALL_SIZE
             SUB AX,WINDOW_BOUNDS
             CMP BALL_Y,AX          
-            JG NEG_VELOCITY_Y      ; BALL_Y > WINDOW_HEIGHT - BALL_SIZE ( collision with bottom boundary )
+            JG NEG_VELOCITY_Y      ; BALL_Y > WINDOW_HEIGHT - BALL_SIZE - WINDOW_BOUNDS ( collision with bottom boundary )
 
 
         RET
